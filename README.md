@@ -1,4 +1,4 @@
-<h1 style= "text-align:center;">The Blind Maze Game</h1>
+<h1 align="center">The Blind Maze Game</h1>
 <h2><b> Requirements </b></h2>
 <ul>
   <li> C++ 11</li>
