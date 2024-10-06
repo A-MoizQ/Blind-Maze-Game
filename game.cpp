@@ -16,10 +16,11 @@ int main(){
     refresh();
     //gameloop (for now)                
     char input;
+    Grid g(10);
     do{
-        Grid g(10);
         g.display();
         input = getch();
+        g.movePlayer(input);
     }while(input != 'q');
     
     //clears up allocated memory by ncurses  

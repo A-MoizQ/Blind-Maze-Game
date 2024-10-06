@@ -9,6 +9,8 @@ class Grid{
 public:
     Grid(int s);
     void display() const;
+    int* initializePlayerCoords(int s) const;
+    void movePlayer(char c);
     ~Grid();
 };
 

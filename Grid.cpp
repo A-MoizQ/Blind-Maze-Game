@@ -1,4 +1,5 @@
 #include "Grid.h"
+#include<random>
 #include<ncurses.h>
 
 Grid::Grid(int s){
@@ -8,6 +9,7 @@ Grid::Grid(int s){
     Node* rowStart = nullptr;
     Node* prev = nullptr;
     size = s;
+    int *playerCoords = initializePlayerCoords(size); //initialize the coords to set player at
     for(int i = 1; i <= size; i++){
         for(int j = 1; j <= size; j++){
             Node* current = new Node;
@@ -42,6 +44,12 @@ Grid::Grid(int s){
                 current->up = prevRow;
                 prevRow = prevRow->right;
             }
+            //if i and j match player row and col then set player pointer
+            if( i == playerCoords[0] && j == playerCoords[1]){
+                //point player pointer to current note to denote player is here
+                player = current;
+                current->data = 'P';
+            }
             //assign current to previous for next iteration
             prev = current;
         }
@@ -49,6 +57,44 @@ Grid::Grid(int s){
         prevRow = rowStart;
         //reset prev pointer for current row
         prev = nullptr;
+    }
+    //delete dynamically allocated memory to store playerCoords
+    delete[] playerCoords;
+}
+
+int* Grid::initializePlayerCoords(int s) const{
+    int *coords = new int[2];
+    srand(time(0));
+    coords[0] = (rand() % (s-2)) + 2;
+    coords[1] = (rand() % (s-2)) + 2;
+    return coords;
+}
+
+//controls player movement
+void Grid::movePlayer(char c){
+    //checks if move is up and up is not boundary point
+    if (c == 'w' && player->up->up != nullptr){
+        player->data = '.';
+        player = player->up;
+        player->data = 'P';
+    }
+    //checks if move is down and down is not boundary point
+    else if (c == 's' && player->down->down != nullptr){
+        player->data = '.';
+        player = player->down;
+        player->data = 'P';
+    }
+    //checks if move is left and left is not boundary point
+    if (c == 'a' && player->left->left != nullptr){
+        player->data = '.';
+        player = player->left;
+        player->data = 'P';
+    }
+    //checks if move is right and right is not boundary point
+    if (c == 'd' && player->right->right != nullptr){
+        player->data = '.';
+        player = player->right;
+        player->data = 'P';
     }
 }
 
