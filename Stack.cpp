@@ -16,7 +16,12 @@ bool Stack::isEmpty() const{
 
 //gives the top of stack
 char Stack::seek() const{
-    return head->data;
+    if(!isEmpty()){
+        return head->data;
+    }
+    else{
+        return ' ';
+    }
 }
 
 //push to the stack

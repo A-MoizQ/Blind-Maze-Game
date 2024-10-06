@@ -20,8 +20,14 @@ int main(){
     do{
         g.display();
         input = getch();
-        g.movePlayer(input);
-    }while(input != 'q');
+        //for undo
+        if(input == 'u'){
+            g.p.undo();
+        }
+        else{
+            g.p.movePlayer(input);
+        }
+    }while(input != 'q' && g.p.getMoveCount() >= 0);
     
     //clears up allocated memory by ncurses  
     endwin();
