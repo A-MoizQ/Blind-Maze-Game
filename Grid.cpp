@@ -2,14 +2,25 @@
 #include<random>
 #include<ncurses.h>
 
-Grid::Grid(int s):p(2,5){
-    topLeft = nullptr;
-    p.player = nullptr;
+Grid::Grid():topLeft(nullptr),key(nullptr),door(nullptr),size(0){}
+
+void Grid::initializeGame(int s){
     Node* prevRow = nullptr;
     Node* rowStart = nullptr;
     Node* prev = nullptr;
     size = s;
     int *playerCoords = p.initializePlayerCoords(size); //initialize the coords to set player at
+    srand(time(0));
+    int keyRow,keyCol,doorRow,doorCol;
+    //set rows and cols of key and door to not be on each another
+    do{
+        keyRow = (rand() % (size-2)) + 2;
+        keyCol = (rand() % (size-2)) + 2;
+        doorRow = (rand() % (size-2)) + 2;
+        doorCol = (rand() % (size-2)) + 2;
+    }while((keyRow == playerCoords[0] && keyCol == playerCoords[1]) || (doorRow == keyRow && doorCol == keyCol ) || (doorRow == playerCoords[0] && doorCol == playerCoords[1]));
+
+    //start filling the grid
     for(int i = 1; i <= size; i++){
         for(int j = 1; j <= size; j++){
             Node* current = new Node;
@@ -50,6 +61,16 @@ Grid::Grid(int s):p(2,5){
                 p.player = current;
                 current->data = 'P';
             }
+            //put key on grid
+            if(keyRow == i && keyCol == j){
+                current->data = 'K';
+                key = current;
+            }
+            //put door on grid
+            if(doorRow == i && doorCol == j){
+                current->data = 'D';
+                door = current;
+            }
             //assign current to previous for next iteration
             prev = current;
         }
@@ -60,16 +81,33 @@ Grid::Grid(int s):p(2,5){
     }
     //delete dynamically allocated memory to store playerCoords
     delete[] playerCoords;
+    //setting move count according to player's distance from key and keys distance from door
+    p.setMoveCount(calculateDistance(p.player,key) + calculateDistance(key,door));
+    //setting undo count and adding additional moves based on size (which is correlated to difficulty)
+    if(size == 10){
+        p.setUndoCount(6);
+        p.setMoveCount(p.getMoveCount() + 6);
+    }
+    else if(size == 15){
+        p.setUndoCount(4);
+        p.setMoveCount(p.getMoveCount() + 2);
+    }
+    else if(size == 20){
+        p.setUndoCount(1);
+    }
 }
 
+int Grid::calculateDistance(Node* A, Node* B) const{
+    return (abs(A->coords[0] - B->coords[0]) + abs(A->coords[1] - B->coords[1]));
+}
 
-void Grid::display() const{
+void Grid::display(int r, int c) const{
     Node* currentRow = topLeft;
-    int row = 0;
+    int row = r;
     while (currentRow != nullptr){
         Node* current = currentRow;
         Node* nextRow = current->down;
-        int col = 0;
+        int col = c;
         while (current != nullptr){   
             //prints on the row/column of the terminal with current->data
             mvprintw(row,col,"%c",current->data);

@@ -6,11 +6,15 @@
 
 class Grid{
     Node* topLeft;
+    Node* key;
+    Node* door;
     int size;
 public:
     Player p;
-    Grid(int s);
-    void display() const;
+    Grid();
+    void initializeGame(int s);
+    int calculateDistance(Node* A, Node* B) const;
+    void display(int r,int c) const;
     ~Grid();
 };
 
