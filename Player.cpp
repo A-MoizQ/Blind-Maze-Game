@@ -1,7 +1,7 @@
 #include "Player.h"
 #include<random>
 
-Player::Player():undoCount(0),coins(nullptr),moveCount(0),keyStatus(false),player(nullptr){}
+Player::Player():undoCount(0),coins(nullptr),moveCount(0),keyStatus(false),doorStatus(false),player(nullptr){}
 
 //initializes 2 random coords to the player
 int* Player::initializePlayerCoords(int s) const{
@@ -44,63 +44,105 @@ void Player::undo(){
         else if(lastMove == 'a'){
             lastMove = 'd';
         }
-
-        movePlayer(lastMove);
-        moveCount += 2; //not considering undo as a move and giving back player the move he undo
-        moves.pop(); //also removing this undo move from moves stack
+        //do the move for undo without pushing it to the stack or decreasing move count
+        movePlayer(lastMove,false);
         undoCount--;
     }
 }
 
 //controls player movement
-void Player::movePlayer(char c){
+void Player::movePlayer(char c, bool pushToStack){
     //checks if move is up and up is not boundary point
-    if (c == 'w' && player->up->up != nullptr && moves.seek() != 's'){
-        player->data = '.';
+    if (c == 'w' && player->up->up != nullptr && (!pushToStack || moves.seek() != 's')){
+        if(!getKeyStatus() && getDoorStatus()){
+            player->data = 'D';
+            changeDoorStatus();
+        }
+        else{
+            player->data = '.';
+        }
         player = player->up;
         //if player is on key change key status to true
         if(player->data == 'K'){
             changeKeyStatus();
         }
+        else if(player->data == 'D'){
+            changeDoorStatus();
+        }
         player->data = 'P';
-        moveCount--;
-        moves.push(c);
+        if(pushToStack){
+            moveCount--;
+            moves.push(c);
+        }
     }
     //checks if move is down and down is not boundary point
-    else if (c == 's' && player->down->down != nullptr && moves.seek() != 'w'){
-        player->data = '.';
+    else if (c == 's' && player->down->down != nullptr && (!pushToStack || moves.seek() != 'w')){
+        if(!getKeyStatus() && getDoorStatus()){
+            player->data = 'D';
+            changeDoorStatus();
+        }
+        else{
+            player->data = '.';
+        }
         player = player->down;
         //if player is on key change key status to true
         if(player->data == 'K'){
             changeKeyStatus();
         }
+        else if(player->data == 'D'){
+            changeDoorStatus();
+        }
         player->data = 'P';
-        moveCount--;
-        moves.push(c);
+        if(pushToStack){
+            moveCount--;
+            moves.push(c);
+        }
     }
     //checks if move is left and left is not boundary point
-    if (c == 'a' && player->left->left != nullptr && moves.seek() != 'd'){
-        player->data = '.';
+    if (c == 'a' && player->left->left != nullptr &&(!pushToStack || moves.seek() != 'd')){
+        if(!getKeyStatus() && getDoorStatus()){
+            player->data = 'D';
+            changeDoorStatus();
+        }
+        else{
+            player->data = '.';
+        }
         player = player->left;
         //if player is on key change key status to true
         if(player->data == 'K'){
             changeKeyStatus();
         }
+        else if(player->data == 'D'){
+            changeDoorStatus();
+        }
         player->data = 'P';
-        moveCount--;
-        moves.push(c);
+        if(pushToStack){
+            moveCount--;
+            moves.push(c);
+        }
     }
     //checks if move is right and right is not boundary point
-    if (c == 'd' && player->right->right != nullptr && moves.seek() != 'a'){
-        player->data = '.';
+    if (c == 'd' && player->right->right != nullptr && (!pushToStack || moves.seek() != 'a')){
+        if(!getKeyStatus() && getDoorStatus()){
+            player->data = 'D';
+            changeDoorStatus();
+        }
+        else{
+            player->data = '.';
+        }
         player = player->right;
         //if player is on key change key status to true
         if(player->data == 'K'){
             changeKeyStatus();
         }
+        else if(player->data == 'D'){
+            changeDoorStatus();
+        }
         player->data = 'P';
-        moveCount--;
-        moves.push(c);
+        if(pushToStack){
+            moveCount--;
+            moves.push(c);
+        }
     }
 }
 
@@ -113,6 +155,13 @@ bool Player::getKeyStatus() const{
     return keyStatus;
 }
 
+void Player::changeDoorStatus(){
+    doorStatus = !doorStatus;
+}
+
+bool Player::getDoorStatus() const{
+    return doorStatus;
+}
 
 int Player::getScore() const{
     return score;

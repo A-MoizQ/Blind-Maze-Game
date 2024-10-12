@@ -7,6 +7,7 @@ class Player{
     int undoCount;      //stores the number of undos player can do
     Node* coins;   //stores the head of linked list storing coins
     bool keyStatus; //tells if player has key or not
+    bool doorStatus; //tells if player has found door
     Stack moves;   //stores all the moves made by player
     int moveCount; //stores moves left for the player
     int score;     //stores score of player
@@ -14,10 +15,12 @@ public:
     Node* player; //points to player's current position in grid
     Player();
     int* initializePlayerCoords(int s) const; //intializes player coordinates
-    void movePlayer(char c);                  //handles player movement
+    void movePlayer(char c, bool pushToStack = true);//handles player movement
     void undo();                              //undos last move
     bool getKeyStatus() const;                //returns key status
+    bool getDoorStatus() const;               //returns door status
     void changeKeyStatus();                   //changes key status when player gets key
+    void changeDoorStatus();                  //changes door status when player has key
     void setUndoCount(int u);                 //sets undo count
     void setMoveCount(int mc);                //sets move count
     void setScore(int s);                     //sets score

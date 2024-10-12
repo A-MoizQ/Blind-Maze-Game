@@ -78,6 +78,10 @@ int main(){
         if(input == 'u'){
             g.p.undo();
         }
+        //if key status is true and door status is also true then quit
+        else if(g.p.getDoorStatus() && g.p.getKeyStatus()){
+            input = 'q';
+        }
         else{
             g.p.movePlayer(input);
         }
