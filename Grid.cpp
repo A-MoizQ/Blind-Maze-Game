@@ -108,9 +108,15 @@ void Grid::display(int r, int c) const{
         Node* current = currentRow;
         Node* nextRow = current->down;
         int col = c;
-        while (current != nullptr){   
+        while (current != nullptr){
+            //to hide key and door from printing
+            if(current->data == 'K' || current->data == 'D'){
+                mvprintw(row,col,".");
+            }   
             //prints on the row/column of the terminal with current->data
-            mvprintw(row,col,"%c",current->data);
+            else{
+                mvprintw(row,col,"%c",current->data);
+            }
             current = current->right;
             col += 2;
         }
@@ -120,6 +126,19 @@ void Grid::display(int r, int c) const{
 
     refresh();
 }
+
+Node* Grid::getKey() const{
+    return key;
+}
+
+Node* Grid::getDoor() const{
+    return door;
+}
+
+bool Grid::closer(int dist1, int dist2) const{
+    return dist1 < dist2;
+}
+
 
 Grid::~Grid(){
     //getting first row start node

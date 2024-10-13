@@ -14,6 +14,9 @@ public:
     Grid();
     void initializeGame(int s);
     int calculateDistance(Node* A, Node* B) const;
+    Node* getKey() const;
+    Node* getDoor() const;
+    bool closer(int dist1, int dist2) const;
     void display(int r,int c) const;
     ~Grid();
 };

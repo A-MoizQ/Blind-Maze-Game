@@ -16,7 +16,8 @@ int main(){
     refresh();
     //gameloop (for now)                
     char input;
-    mvprintw(0,0,"Enter Difficulty (easy:e,medium:m,hard:h): ");
+    mvprintw(0,0,"\"w,a,s,d\" for movement. \"u\" for undo. \"q\" for quitting the game");
+    mvprintw(2,0,"Enter Difficulty (easy:e,medium:m,hard:h): ");
     input = getch();
     Grid g;
     char *mode;
@@ -41,6 +42,7 @@ int main(){
         mode = "hard";
     }
     clear();
+    int currentDistance,newDistance;
     do{
         int row = 0,col = 10;
         //prints game mode
@@ -67,7 +69,18 @@ int main(){
         mvprintw(row,col,"Key Status: %s",g.p.getKeyStatus()?"true":"false");
         //move row down
         row += 2;
-
+        col = 0;
+        mvprintw(row,col,"Hint: %s", g.closer(newDistance,currentDistance)?"getting closer":"getting farther");
+        col += 20;
+        row += 2;
+        //if key status is false calculate distance from key
+        if(!g.p.getKeyStatus()){
+            currentDistance = g.calculateDistance(g.p.player,g.getKey());
+        }
+        //if user has key then calculate distance from door
+        else{
+            currentDistance = g.calculateDistance(g.p.player,g.getDoor());
+        }
         //reset col for displaying grid
         col = col/4;
         //displays grid
@@ -78,15 +91,27 @@ int main(){
         if(input == 'u'){
             g.p.undo();
         }
-        //if key status is true and door status is also true then quit
-        else if(g.p.getDoorStatus() && g.p.getKeyStatus()){
-            input = 'q';
-        }
         else{
             g.p.movePlayer(input);
         }
+        //if key is not found calculate distance from key
+        if(!g.p.getKeyStatus()){
+            newDistance = g.calculateDistance(g.p.player,g.getKey());
+        }
+        //if key is found calculate distance from door
+        else{
+            newDistance = g.calculateDistance(g.p.player,g.getDoor());
+        }
+        //if key status is true and door status is also true then quit
+        if(g.p.getDoorStatus() && g.p.getKeyStatus()){
+            input = 'q';
+        }
+        //if move count is zero then quit
+        if(g.p.getMoveCount() == 0){
+            input = 'q';
+        }
         clear();
-    }while(input != 'q' && g.p.getMoveCount() >= 0);
+    }while(input != 'q');
     
     //clears up allocated memory by ncurses  
     endwin();
