@@ -71,7 +71,10 @@ int main(){
         row += 2;
         col = 0;
         mvprintw(row,col,"Hint: %s", g.closer(newDistance,currentDistance)?"getting closer":"getting farther");
-        col += 20;
+        col += 30;
+        mvprintw(row,col,"Next in line: ");
+        col += 15;
+        g.p.inv.displayNextInLine(row,col);
         row += 2;
         //if key status is false calculate distance from key
         if(!g.p.getKeyStatus()){

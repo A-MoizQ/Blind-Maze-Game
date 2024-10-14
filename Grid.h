@@ -2,6 +2,7 @@
 #define GRID_H
 #include "Node.h"
 #include "Player.h"
+#include "Drop.h"
 
 
 class Grid{
@@ -12,12 +13,12 @@ class Grid{
 public:
     Player p;
     Grid();
-    void initializeGame(int s);
-    int calculateDistance(Node* A, Node* B) const;
-    Node* getKey() const;
-    Node* getDoor() const;
-    bool closer(int dist1, int dist2) const;
-    void display(int r,int c) const;
+    void initializeGame(int s);                     //sets up the entire game
+    int calculateDistance(Node* A, Node* B) const;  //calculates city block distance between A and B
+    Node* getKey() const;                           //returns key pointer
+    Node* getDoor() const;                          //returns door pointer
+    bool closer(int dist1, int dist2) const;        //checks if player got closer
+    void display(int r,int c) const;                //displays the grid
     ~Grid();
 };
 

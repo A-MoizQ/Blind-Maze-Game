@@ -9,9 +9,23 @@ void Grid::initializeGame(int s){
     Node* rowStart = nullptr;
     Node* prev = nullptr;
     size = s;
+    int dropCount;
+    if(size == 10){
+        dropCount = 4;
+        p.inv.setDropCount(dropCount);
+    }
+    else if( size == 15){
+        dropCount = 8;
+        p.inv.setDropCount(dropCount);
+    }
+    else{
+        dropCount = 10;
+        p.inv.setDropCount(dropCount);
+    }
     int *playerCoords = p.initializePlayerCoords(size); //initialize the coords to set player at
     srand(time(0));
     int keyRow,keyCol,doorRow,doorCol;
+    int dropRow[dropCount],dropCol[dropCount];
     //set rows and cols of key and door to not be on each another
     do{
         keyRow = (rand() % (size-2)) + 2;
@@ -19,6 +33,27 @@ void Grid::initializeGame(int s){
         doorRow = (rand() % (size-2)) + 2;
         doorCol = (rand() % (size-2)) + 2;
     }while((keyRow == playerCoords[0] && keyCol == playerCoords[1]) || (doorRow == keyRow && doorCol == keyCol ) || (doorRow == playerCoords[0] && doorCol == playerCoords[1]));
+    
+    //setting drop coordinates
+    for(int i = 0; i < dropCount; i++){
+        bool valid;
+        do{
+            valid = true;
+            dropRow[i] = (rand() % (size-2)) + 2;
+            dropCol[i] = (rand() % (size-2)) + 2;
+            //check with door,player and key
+            if((dropRow[i] == playerCoords[0] && dropCol[i] == playerCoords[1]) || (dropRow[i] == keyRow && dropCol[i] == keyCol) || (dropRow[i] == doorRow && dropCol[i] == doorCol)){
+                valid = false;
+            }
+            //check with previous entries
+            for(int j = 0; j < i; j++){
+                if(dropRow[i] == dropRow[j] && dropCol[i] == dropCol[j]){
+                    valid = false;
+                    break;
+                }
+            }
+        }while(!valid);
+    }
 
     //start filling the grid
     for(int i = 1; i <= size; i++){
@@ -71,6 +106,13 @@ void Grid::initializeGame(int s){
                 current->data = 'D';
                 door = current;
             }
+            for(int k = 0 ; k < dropCount; k++){
+                if(dropRow[k] == i && dropCol[k] == j){
+                    current->data = p.generateDrop(dropCount);
+                    p.inv.insertInCurrent(current->data);
+                }
+            }
+
             //assign current to previous for next iteration
             prev = current;
         }
@@ -94,6 +136,9 @@ void Grid::initializeGame(int s){
     }
     else if(size == 20){
         p.setUndoCount(1);
+    }
+    for(int k = 0; k < dropCount ;k++){
+        p.inv.insertInNext(p.generateDrop(dropCount));
     }
 }
 
@@ -126,6 +171,8 @@ void Grid::display(int r, int c) const{
 
     refresh();
 }
+
+
 
 Node* Grid::getKey() const{
     return key;

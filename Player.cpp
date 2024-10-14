@@ -1,7 +1,7 @@
 #include "Player.h"
 #include<random>
 
-Player::Player():undoCount(0),coins(nullptr),moveCount(0),keyStatus(false),doorStatus(false),player(nullptr){}
+Player::Player():undoCount(0),coins(nullptr),moveCount(0),keyStatus(false),doorStatus(false),player(nullptr),score(0){}
 
 //initializes 2 random coords to the player
 int* Player::initializePlayerCoords(int s) const{
@@ -26,6 +26,24 @@ void Player::setMoveCount(int mc){
 
 void Player::setUndoCount(int u){
     undoCount = u;
+}
+
+char Player::generateDrop(int dc) const{
+    int val = rand() % 100; //generates a value from 0 to 99
+    if(dc == 4){
+        //75% chance of coin and 25% chance of bomb for easy difficulty
+        return (val < 75)?'C':'B';
+    }
+    else if(dc == 8){
+        //50% chance for coin 50% chance for bomb for medium difficulty
+        return (val < 50)?'C':'B';
+    }
+    else if(dc == 10){
+        //25% chance for coin and 75% chance for bomb for hard difficulty
+        return (val < 25)?'C':'B';
+    }
+    //punishment for not giving correct dropCount
+    return 'B';
 }
 
 void Player::undo(){

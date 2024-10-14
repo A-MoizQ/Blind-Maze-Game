@@ -11,7 +11,7 @@ LDFLAGS = -lncurses
 TARGET = game
 
 # Source files
-SRC = Node.cpp Grid.cpp Stack.cpp Player.cpp game.cpp
+SRC = Node.cpp Grid.cpp Stack.cpp Player.cpp Drop.cpp game.cpp
 
 # Object files (corresponding to each .cpp file)
 OBJ = $(SRC:.cpp=.o)
