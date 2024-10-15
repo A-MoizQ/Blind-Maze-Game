@@ -19,6 +19,7 @@ public:
     Node* getDoor() const;                          //returns door pointer
     bool closer(int dist1, int dist2) const;        //checks if player got closer
     void display(int r,int c) const;                //displays the grid
+    void displayEndGame(int r, int c) const;              //displays end game grid
     ~Grid();
 };
 

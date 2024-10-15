@@ -60,6 +60,7 @@ char Drop::removeFromCurrent(){
     else{
         currentDropHead->left = nullptr;
     }
+    dropCount--;
     char data = temp->data;
     delete[] temp->coords;
     delete temp;
@@ -104,7 +105,7 @@ void Drop::generateDropCoords(int& dropRow, int& dropCol, int& keyRow, int& keyC
     }while(!valid);
 }
     
-void Drop::pickUpCoin(int r, int c){
+void Drop::pickUpDrop(int r, int c){
     Node* current = currentDropHead;
     while(current != nullptr){
         if(current->coords[0] == r && current->coords[1] == c){

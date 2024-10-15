@@ -98,6 +98,27 @@ int main(){
         else{
             g.p.movePlayer(input);
         }
+        //if user has stepped on a bomb
+        if(g.p.getData() == 'B'){
+            input = 'q';
+            clear();
+            row = 0; col = 0;
+            //prints game mode
+            mvprintw(row,col,"Game Mode: %s",mode);
+            //reset column for next row
+            col = 0;
+            //move row forward
+            row += 2;
+            mvprintw(row,col,"Game over !!!!!");
+            row += 2;
+            mvprintw(row,col,"Items collected: ");
+            col += 30;
+            // g.p.displayCoins(row,col);
+            row += 2;
+            col = 0;
+            g.displayEndGame(row,col);
+            getch();
+        }
         //if key is not found calculate distance from key
         if(!g.p.getKeyStatus()){
             newDistance = g.calculateDistance(g.p.player,g.getKey());
@@ -109,10 +130,44 @@ int main(){
         //if key status is true and door status is also true then quit
         if(g.p.getDoorStatus() && g.p.getKeyStatus()){
             input = 'q';
+            clear();
+            row = 0; col = 0;
+            //prints game mode
+            mvprintw(row,col,"Game Mode: %s",mode);
+            //reset column for next row
+            col = 0;
+            //move row forward
+            row += 2;
+            mvprintw(row,col,"Game over !!!!!");
+            row += 2;
+            mvprintw(row,col,"Items collected: ");
+            col += 30;
+            // g.p.displayCoins(row,col);
+            row += 2;
+            col = 0;
+            g.displayEndGame(row,col);
+            getch();
         }
         //if move count is zero then quit
         if(g.p.getMoveCount() == 0){
             input = 'q';
+            clear();
+            row = 0; col = 0;
+            //prints game mode
+            mvprintw(row,col,"Game Mode: %s",mode);
+            //reset column for next row
+            col = 0;
+            //move row forward
+            row += 2;
+            mvprintw(row,col,"Game over !!!!!");
+            row += 2;
+            mvprintw(row,col,"Items collected: ");
+            col += 30;
+            // g.p.displayCoins(row,col);
+            row += 2;
+            col = 0;
+            g.displayEndGame(row,col);
+            getch();
         }
         clear();
     }while(input != 'q');

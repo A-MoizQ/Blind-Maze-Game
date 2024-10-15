@@ -140,8 +140,8 @@ void Grid::display(int r, int c) const{
         Node* nextRow = current->down;
         int col = c;
         while (current != nullptr){
-            //to hide key and door from printing
-            if(current->data == 'K' || current->data == 'D'){
+            //to hide key, door and bomb from printing
+            if(current->data == 'K' || current->data == 'D' || current->data == 'B'){
                 mvprintw(row,col,".");
             }   
             //prints on the row/column of the terminal with current->data
@@ -158,6 +158,31 @@ void Grid::display(int r, int c) const{
     refresh();
 }
 
+void Grid::displayEndGame(int r, int c) const{
+    Node* currentRow = topLeft;
+    while(currentRow != nullptr){
+        Node* current = currentRow;
+        while(current != nullptr){
+            if(p.checkCoin(r,c)){
+                mvprintw(r,c,"C");
+            }
+            else if(key->coords[0] == r && key->coords[1] == c){
+                mvprintw(r,c,"K");   
+            }
+            else if(door->coords[0] == r && door->coords[1] == c){
+                mvprintw(r,c,"D");
+            }
+            else{
+                mvprintw(r,c,"%c",current->data);
+            }
+            c += 2;
+            current = current->right;
+        }
+        r += 1;
+        c = 0;
+        currentRow = currentRow->down;
+    }
+}
 
 
 Node* Grid::getKey() const{

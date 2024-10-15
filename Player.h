@@ -22,8 +22,12 @@ public:
     Drop inv;      //stores player inventory
     Player();
     int* initializePlayerCoords(int s) const; //intializes player coordinates
+    char getData() const;                     //returns player data
+    void displayCoins(int r, int c) const;                //displays player collected coins
+    bool checkCoin(int r, int c) const;         //checks if coin was on given row and col
     void movePlayer(char c, bool pushToStack = true);//handles player movement
     void undo();                              //undos last move
+    void placeOnGrid(Node* placer,int r, int c, char val); //places new item on grid
     bool getKeyStatus() const;                //returns key status
     bool getDoorStatus() const;               //returns door status
     void changeKeyStatus();                   //changes key status when player gets key
@@ -37,6 +41,11 @@ public:
     int getMoveCount() const;                 //gets move count
     int getUndoCount() const;                 //gets undo count
     int getScore() const;                     //gets scoreCount
+    void walkToBombAnimation() const;         //animation of player stepping on bomb
+    bool rockPaperScissorsAnimation() const;  //que a rock paper scissor game with the man
+    void scaryLaughAnimation() const;         //scary man saying you stepped on a bomb
+    void bombExplosionAnimation() const;      //animation plays and user exploads lol :)
+    ~Player();
 };
 
 #endif

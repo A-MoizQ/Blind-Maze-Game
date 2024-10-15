@@ -24,7 +24,7 @@ public:
     void setDropCoords(int r, int c);
     //generate random drop coordinates 
     void generateDropCoords(int& dropRow, int& dropCol, int& keyRow, int& keyCol, int& doorRow, int& doorCol, int& playerRow, int& playerCol,int size, int* dropRows, int* dropCols, int dropCount);
-    void pickUpCoin(int r, int c);     //to remove the coin picked up by user
+    void pickUpDrop(int r, int c);     //to remove the coin picked up by user
     int* getDropRows() const;
     int* getDropCols() const;
     void updateTimer();       //updates the timer 
