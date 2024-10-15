@@ -14,7 +14,7 @@ int main(){
     cbreak();    
     //refreshes the terminal onto ncurses mode           
     refresh();
-    //gameloop (for now)                
+                   
     char input;
     mvprintw(0,0,"\"w,a,s,d\" for movement. \"u\" for undo. \"q\" for quitting the game");
     mvprintw(2,0,"Enter Difficulty (easy:e,medium:m,hard:h): ");
@@ -43,6 +43,7 @@ int main(){
     }
     clear();
     int currentDistance,newDistance;
+    //gameloop 
     do{
         int row = 0,col = 10;
         //prints game mode

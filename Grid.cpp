@@ -33,26 +33,11 @@ void Grid::initializeGame(int s){
         doorRow = (rand() % (size-2)) + 2;
         doorCol = (rand() % (size-2)) + 2;
     }while((keyRow == playerCoords[0] && keyCol == playerCoords[1]) || (doorRow == keyRow && doorCol == keyCol ) || (doorRow == playerCoords[0] && doorCol == playerCoords[1]));
-    
+    //for generating new coords for drops in player class 
+    p.setKeyAndDoor(keyRow,keyCol,doorRow,doorCol,size);
     //setting drop coordinates
     for(int i = 0; i < dropCount; i++){
-        bool valid;
-        do{
-            valid = true;
-            dropRow[i] = (rand() % (size-2)) + 2;
-            dropCol[i] = (rand() % (size-2)) + 2;
-            //check with door,player and key
-            if((dropRow[i] == playerCoords[0] && dropCol[i] == playerCoords[1]) || (dropRow[i] == keyRow && dropCol[i] == keyCol) || (dropRow[i] == doorRow && dropCol[i] == doorCol)){
-                valid = false;
-            }
-            //check with previous entries
-            for(int j = 0; j < i; j++){
-                if(dropRow[i] == dropRow[j] && dropCol[i] == dropCol[j]){
-                    valid = false;
-                    break;
-                }
-            }
-        }while(!valid);
+        p.inv.generateDropCoords(dropRow[i],dropCol[i],keyRow,keyCol,doorRow,doorCol,playerCoords[0],playerCoords[1],size,dropRow,dropCol,i);
     }
 
     //start filling the grid
@@ -110,6 +95,7 @@ void Grid::initializeGame(int s){
                 if(dropRow[k] == i && dropCol[k] == j){
                     current->data = p.generateDrop(dropCount);
                     p.inv.insertInCurrent(current->data);
+                    p.inv.setDropCoords(i,j);
                 }
             }
 
