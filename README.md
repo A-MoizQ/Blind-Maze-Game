@@ -35,3 +35,13 @@
   <li> once the make is finished write ./game </li>
   <li> the game will run and show you start menu </li>
 </ul>
+
+<h3> Screenshots of game </h3>
+<ul>
+  <li> Starting screen </li>
+  <li><img src = "start.png" alt = "game start"></li>
+  <li> Game running </li>
+  <li><img src = "game.png" alt = "game running"></li>
+  <li> Game End </li>
+  <li><img src = "end.png" alt = "game end"></li>
+</ul>
