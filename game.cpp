@@ -3,6 +3,25 @@
 
 using namespace std;
 
+void displayEnd(int row, int col, char* mode,Grid& g){
+    clear();
+    row = 0; col = 10;
+    //prints game mode
+    mvprintw(row,col,"Game Mode: %s",mode);
+    //reset column for next row
+    col = 0;
+    //move row forward
+    row += 2;
+    mvprintw(row,col,"Game over !!!!!");
+    row += 2;
+    mvprintw(row,col,"Items collected: ");
+    col += 20;
+    g.p.displayCoins(row,col);
+    row += 2;
+    col /= 4;
+    g.displayEndGame(row,col);
+}
+
 int main(){
     //initialize ncurses screen
     initscr();
@@ -101,22 +120,7 @@ int main(){
         //if user has stepped on a bomb
         if(g.p.getData() == 'B'){
             input = 'q';
-            clear();
-            row = 0; col = 0;
-            //prints game mode
-            mvprintw(row,col,"Game Mode: %s",mode);
-            //reset column for next row
-            col = 0;
-            //move row forward
-            row += 2;
-            mvprintw(row,col,"Game over !!!!!");
-            row += 2;
-            mvprintw(row,col,"Items collected: ");
-            col += 30;
-            // g.p.displayCoins(row,col);
-            row += 2;
-            col = 0;
-            g.displayEndGame(row,col);
+            displayEnd(row,col,mode,g);
             getch();
         }
         //if key is not found calculate distance from key
@@ -130,43 +134,13 @@ int main(){
         //if key status is true and door status is also true then quit
         if(g.p.getDoorStatus() && g.p.getKeyStatus()){
             input = 'q';
-            clear();
-            row = 0; col = 0;
-            //prints game mode
-            mvprintw(row,col,"Game Mode: %s",mode);
-            //reset column for next row
-            col = 0;
-            //move row forward
-            row += 2;
-            mvprintw(row,col,"Game over !!!!!");
-            row += 2;
-            mvprintw(row,col,"Items collected: ");
-            col += 30;
-            // g.p.displayCoins(row,col);
-            row += 2;
-            col = 0;
-            g.displayEndGame(row,col);
+            displayEnd(row,col,mode,g);
             getch();
         }
         //if move count is zero then quit
         if(g.p.getMoveCount() == 0){
             input = 'q';
-            clear();
-            row = 0; col = 0;
-            //prints game mode
-            mvprintw(row,col,"Game Mode: %s",mode);
-            //reset column for next row
-            col = 0;
-            //move row forward
-            row += 2;
-            mvprintw(row,col,"Game over !!!!!");
-            row += 2;
-            mvprintw(row,col,"Items collected: ");
-            col += 30;
-            // g.p.displayCoins(row,col);
-            row += 2;
-            col = 0;
-            g.displayEndGame(row,col);
+            displayEnd(row,col,mode,g);
             getch();
         }
         clear();
@@ -176,3 +150,5 @@ int main(){
     endwin();
     return 0;
 }
+
+

@@ -51,9 +51,9 @@ void Player::displayCoins(int r, int c) const{
     Node* current = coins;
     while(current != nullptr){
         if(current->coords != nullptr){
-            mvprintw(r,c,"(%i,%i,%s),",current->coords[0],current->coords[1],current->data);
+            mvprintw(r,c,"(%i,%i,%c),",current->coords[0],current->coords[1],current->data);
         }
-        c += 5;
+        c += 10;
         current = current->right;
     }
 }

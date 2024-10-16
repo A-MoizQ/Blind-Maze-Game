@@ -160,26 +160,27 @@ void Grid::display(int r, int c) const{
 
 void Grid::displayEndGame(int r, int c) const{
     Node* currentRow = topLeft;
+    int row = r, col = c;
     while(currentRow != nullptr){
         Node* current = currentRow;
         while(current != nullptr){
-            if(p.checkCoin(r,c)){
-                mvprintw(r,c,"C");
+            if(p.checkCoin(current->coords[0],current->coords[1])){
+                mvprintw(row,col,"C");
             }
-            else if(key->coords[0] == r && key->coords[1] == c){
-                mvprintw(r,c,"K");   
+            else if(key->coords[0] == current->coords[0] && key->coords[1] == current->coords[1]){
+                mvprintw(row,col,"K");   
             }
-            else if(door->coords[0] == r && door->coords[1] == c){
-                mvprintw(r,c,"D");
+            else if(door->coords[0] == current->coords[0] && door->coords[1] == current->coords[1]){
+                mvprintw(row,col,"D");
             }
             else{
-                mvprintw(r,c,"%c",current->data);
+                mvprintw(row,col,"%c",current->data);
             }
-            c += 2;
+            col += 2;
             current = current->right;
         }
-        r += 1;
-        c = 0;
+        row += 1;
+        col = c;
         currentRow = currentRow->down;
     }
 }
